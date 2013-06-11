@@ -1,0 +1,188 @@
+<?php
+include('lib/session.php');
+
+$cod_mat=$_GET['cod_mat'];
+$sec_mat=$_GET['sec_mat'];
+$cod_nuc_mat=$_GET['cod_nuc_mat'];
+$corte=$_GET['corte'];
+
+$Error=false;
+$Success=false;
+
+include('lib/conexion.php');
+
+//busco la descripcion de la materia
+$sqlmateria="SELECT des_mat as mate FROM materias WHERE cod_mat='$cod_mat'";
+$resultado_materia=mysql_query($sqlmateria);
+$materia=mysql_fetch_assoc($resultado_materia);
+
+$sql_estudiantes= "SELECT cedula, (SELECT nom_ape FROM estudiantes WHERE cedula=inscripciones.cedula LIMIT 0,1) as nom_ape FROM inscripciones WHERE cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc=$cod_nuc_mat AND lapso=$lapso AND NOT EXISTS (SELECT * FROM calificaciones_parcial WHERE ced_estu=inscripciones.cedula AND cod_mat=inscripciones.cod_mat AND sec_mat=inscripciones.sec_mat AND cod_nuc=inscripciones.cod_nuc AND lapso=inscripciones.lapso AND corte='$corte') ORDER BY cedula";
+$result_estudiantes= mysql_query($sql_estudiantes);
+$cantestudiantes = mysql_num_rows($result_estudiantes);
+
+if ($cantestudiantes>=1)
+{
+	//Buscamos las evaluaciones que hay para el corte
+	$sql_evaluacion = "SELECT tipo, id, porcentaje, (SELECT descripcion FROM tipos_evaluacion WHERE cod_eval=plan_evaluacion.tipo) as des_tipo FROM plan_evaluacion WHERE cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc='$cod_nuc_mat' AND lapso=$lapso AND corte='$corte'";
+	$resultado_evaluacion=mysql_query($sql_evaluacion);
+	$numcolumnas=mysql_num_rows($resultado_evaluacion);
+
+	$i=0;
+	$tablaEncabezado ='<table class=tabla-notas align="center"><tr class="tabla-cabecera"><td>#</td><td class=td-a>C&eacute;dula</td><td>Nombre Estudiante</td>';
+	//agregamos la descripcion de cada evaluacion
+	while ($fila=mysql_fetch_assoc($resultado_evaluacion))
+	{
+		$tablaEncabezado .= "<td class=td-a style='width:120px!important'>".$fila['des_tipo']." ".$fila['porcentaje']."%</td>";	
+	}
+	$i=0;
+	//agregamos los estudiantes y los input de text de cada evaluacion
+	while($filaCalifi=mysql_fetch_assoc($result_estudiantes))
+	{
+		$i++;
+		$tablaEncabezado .= "<tr><td class=td-a align='center'>".$i."</td><td class=td-a align='center'>".$filaCalifi['cedula']."</td><td class=td-a>".$filaCalifi['nom_ape']."</td>";
+			
+		$sql = "SELECT tipo, id, (SELECT descripcion FROM tipos_evaluacion WHERE cod_eval=plan_evaluacion.tipo) as des_tipo FROM plan_evaluacion WHERE cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc=$cod_nuc_mat AND lapso=$lapso AND corte=$corte";
+		$resultado=mysql_query($sql);
+		$j=0; 	
+		while ($fila2=mysql_fetch_assoc($resultado))
+		{
+			$j++;
+			if (isset($_POST['califi'.$i.$j]))
+			{
+				$tablaEncabezado .="<td class=td-notas><input type=\"text\" size=\"1\"  value=\"".$_POST['califi'.$i.$j]."\" name=\"califi$i$j\" maxlength=\"3\" pattern=\"[0-9]{1,3}\" required/>
+				<input type=\"hidden\" name=\"idcalifi$i$j\" value=\"".$fila2['id']."\" /></td>";
+			}else
+			{
+				$tablaEncabezado .="<td class=td-notas><input type=\"text\" size=\"1\" name=\"califi$i$j\" maxlength=\"3\" pattern=\"^[0-9_]{1,3}$\" required/>
+				<input type=\"hidden\" name=\"idcalifi$i$j\" value=\"".$fila2['id']."\" /></td>";
+			}		
+		}
+		$tablaEncabezado .= "</tr>";
+	}
+	$tablaEncabezado .= '</tr></table>';
+}
+
+if(isset($_POST['agregar']) && $_POST['agregar']='Agregar')
+{
+	//obtengo la cantidad de filas que tienen los input de notas
+	$i=1;
+	$Errorvalidacion=false;
+	$sql_estudiantes= "SELECT cedula FROM inscripciones WHERE cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc=$cod_nuc_mat AND lapso=$lapso AND NOT EXISTS (SELECT * FROM calificaciones_parcial WHERE ced_estu=inscripciones.cedula AND cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc=$cod_nuc_mat AND lapso=$lapso AND corte=$corte) ORDER BY cedula";
+	$result_estudiantes= mysql_query($sql_estudiantes);
+	while($estudiantes=mysql_fetch_assoc($result_estudiantes))
+	{
+		for($j=1;$j<=$numcolumnas;$j++)
+		{
+			if ($_POST['califi'.$i.$j]>100 || $_POST['califi'.$i.$j]==0)
+			{
+				$Errorvalidacion=true;
+				$msgError='Las Notas agregadas no pueden ser iguales a 0 o mayores de 100 puntos';
+			}
+		}
+		$i++;
+	}
+	if($Errorvalidacion!=true)
+	{
+		$i=1;
+		$sql_estudiantes= "SELECT cedula FROM inscripciones WHERE cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc=$cod_nuc_mat AND lapso=$lapso AND NOT EXISTS (SELECT * FROM calificaciones_parcial WHERE ced_estu=inscripciones.cedula AND cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc=$cod_nuc_mat AND lapso=$lapso AND corte=$corte) ORDER BY cedula";
+		$result_estudiantes= mysql_query($sql_estudiantes);
+		while($estudiantes=mysql_fetch_assoc($result_estudiantes))
+		{
+			if($corte==1)
+			{
+				$sql_insert1="INSERT INTO calificaciones_parciales_temporal (LAP_NOT, COD_MAT, SEC_MAT, COD_NUC, CEDULA";
+				$sql_insert2="VALUES ('$lapso','$cod_mat','$sec_mat','$cod_nuc_mat','".$estudiantes['cedula']."'";
+			}else
+			{
+				$sql_update="UPDATE calificaciones_parciales_temporal SET";
+			}		
+			$total=0;
+			for($j=1;$j<=$numcolumnas;$j++)
+			{
+				$total=$total+$_POST['califi'.$i.$j];
+				$sql_insertar_nota="INSERT INTO calificaciones_parcial (ced_estu, cod_mat, sec_mat, cod_nuc, lapso, id_plan_eval, calificacion, corte) VALUES ('".$estudiantes['cedula']."','$cod_mat','$sec_mat','$cod_nuc_mat','$lapso','".$_POST['idcalifi'.$i.$j]."','".$_POST['califi'.$i.$j]."','$corte')";
+				$result_insertar_notas=mysql_query($sql_insertar_nota);
+				if($corte==1)
+				{
+					$sql_insert1.=", CALIF_".$corte.$j;
+					$sql_insert2.=",'".$_POST['califi'.$i.$j]."'";
+				}else
+				{
+					$sql_update.=" CALIF_".$corte.$j."='".$_POST['califi'.$i.$j]."',";
+				}	
+			}
+			$i++;
+			if($corte==1)
+			{
+				$sql_insert1.=", ACUM_".$corte."C) ";
+				$sql_insert2.=",'".$total."')";
+				$sql_insert=$sql_insert1.$sql_insert2;
+				$result_insert=mysql_query($sql_insert);
+			}else
+			{
+				$sql_update.=" ACUM_".$corte."C='".$total."' WHERE CEDULA=".$estudiantes['cedula']." AND COD_MAT='$cod_mat' AND SEC_MAT='$sec_mat' AND COD_NUC=$cod_nuc_mat AND LAP_NOT=$lapso";
+				$result_update=mysql_query($sql_update);
+			}
+		}
+		$Success=true;
+		$msgSuccess='Las Notas Han Sido Agregadas Satisfactoriamente';
+
+	}
+
+	if($corte==1)
+	{
+		$sqlnumcortes="SELECT valores as numcortes FROM tbl_configuraciones WHERE descripcion='num_cortes_semestre'";
+		$resultnumcortes=mysql_query($sqlnumcortes);
+		$numcortes=mysql_fetch_assoc($resultnumcortes);
+		$por_insert1="INSERT INTO calificaciones_plan_temporal (LAP_NOT, COD_MAT, SEC_MAT, COD_NUC ";
+		$por_insert2="VALUES ('$lapso','$cod_mat','$sec_mat','$cod_nuc_mat'";
+		for($a=1;$a<=$numcortes['numcortes'];$a++)
+		{
+			$b=0;
+			$sql_porcentajes="SELECT porcentaje, num_eval FROM plan_evaluacion WHERE cod_mat='$cod_mat' AND sec_mat='$sec_mat' AND cod_nuc=$cod_nuc_mat AND lapso=$lapso AND corte=$a AND ced_prof=$cedula ORDER BY num_eval";
+			$result_porcentajes=mysql_query($sql_porcentajes);
+			while($porcentajes=mysql_fetch_assoc($result_porcentajes))
+			{
+				$b++;
+				$por_insert1.=", PORC_".$a.$b;
+				$por_insert2.=",'".$porcentajes['porcentaje']."'";
+			}
+		}
+		$por_insert1.=") ";
+		$por_insert2.=")";
+		$por_insert=$por_insert1.$por_insert2;
+		$result_por_insert=mysql_query($por_insert);
+	}	
+}
+include('lib/header.php');
+?>
+			<div class="columna_central">
+
+				<strong>MATERIA: </strong><?php echo $materia['mate']; ?><br />
+				<strong>SECCION: </strong><?php echo $sec_mat; ?><br /><br />
+				<?php
+				if (isset($Error) && $Error==true)
+				{	
+					echo '<table align="center"><tr><td colspan="2"><div class="warning">'.$msgError.'</div></td></tr></table>';
+				}elseif (isset($Success) && $Success==true)
+				{	
+					echo '<table align="center"><tr><td colspan="2"><div class="success">'.$msgSuccess.'</div></td></tr></table>';
+				}else
+				{ ?>
+
+					<table align="center"><tr><td colspan="2"><div class="success">Las notas agregadas deben ser en base a 100 puntos</div></td></tr></table>
+					<?php
+
+					if(isset($Errorvalidacion) && $Errorvalidacion==true)
+					{
+						echo '<table align="center"><tr><td colspan="2"><div class="warning">'.$msgError.'</div></td></tr></table>';
+					}
+					if(isset($i) && $i>=1)
+					{
+						echo '<form name="AgregarCalificacion" action="" method="post">'.$tablaEncabezado.'<table><tr><input align="center" style="margin-left:260px" type="submit" name="agregar" value="Agregar"></tr></table></form><br>';				
+					}
+				}
+				?>
+			</div>
+
+<?php include('lib/footer.php'); ?>
