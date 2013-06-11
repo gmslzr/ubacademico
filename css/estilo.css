@@ -1,0 +1,377 @@
+body {
+	margin:0;
+	font-size:80%;
+	/*background-color:#E2F3FE;*/
+	background-color:#FFFFFF;
+}
+a{
+	color:blue;
+}
+
+.marco {
+	width:970px;
+	margin:10px auto 10px auto; /* Centrado horizontal */
+}
+
+.cabecera {
+	padding:0px;
+	height:115px;
+	overflow-x:hidden;
+	overflow-y:auto; /* Hace que se ajuste a la columna más alta en ff */
+	/*height:100%; Hace que se ajuste a la columna más alta  en ie6 */
+	margin-bottom:10px;
+}
+
+.cuerpo {
+	padding:0px 0 5px 0;
+	overflow-x:hidden;
+	overflow-y:auto; /* Hace que se ajuste a la columna más alta en ff */
+	height:100%; /* Hace que se ajuste a la columna más alta  en ie6 */
+}
+
+
+.columna_derecha {
+	float:right; /* Alineación a la derecha */
+	width:181px;
+	/*padding:10px;*/
+}
+
+.columna_derecha h2{
+	margin-top:0px;	
+	color:#4880B3;
+	background-color:#DCDEDD;
+	border: solid 1px #DCDEDD;
+}
+
+.columna_izquierda {
+	float:left; /* Alineación a la izquierda */
+	width:179px;
+	/*border:solid lightblue 1px;*/
+}
+
+.columna_central {
+	margin-left:190px; /* Espacio para la columna izquierda */
+	margin-right:190px; /* Espacio para la columna derecha */
+	/*border:solid navy 1px;*/
+	background-color:#FFFFFF;
+}
+
+.columna_central h2{
+	margin-top:0px;	
+}
+
+.msgAlerta{
+	color: red;
+}
+input[type=text]{
+	text-transform: uppercase;
+}
+
+#lower{
+	text-transform: none;
+}			 
+.warning {
+	padding: 5px 5px 5px 5px;
+	margin-bottom: 10px;
+	background: #FFDFE0;
+	border: 1px solid red;
+	color: red;
+	font-size: 12px;
+	font-family: Verdana, Geneva, sans-serif;
+	text-align: center;
+}
+.success {
+	padding: 5px 5px 5px 5px;
+	margin-bottom: 10px;
+	background: #B3ECFF;
+	border: 1px solid #33CCFF;
+	font-size: 12px;
+	font-family: Verdana, Geneva, sans-serif;
+	text-align: center;
+}
+
+select option{ color: black;}
+.empty{color: gray;}
+
+.requeridos {
+	float:none;
+	vertical-align:middle;
+	color:red;
+	margin-left:10px;
+	font-size: 12px;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.tabla-a{
+	border-collapse: collapse;
+	border: 2px solid black;
+	text-align: center;
+	width: 100%;
+}
+.tabla-notas{
+	border-collapse: collapse;
+	border: 2px solid black;
+	width: 100%;
+}
+.td-notas{
+	border: 1px solid black;
+	padding: 1px 2px 1px 2px;
+	text-align: center;
+}
+.td-a{
+	border: 1px solid black;
+	padding: 1px 2px 1px 2px;
+}
+
+.td-opciones{
+	border: 1px solid black;
+	padding: 1px 2px 1px 50px;
+}
+
+.td-opciones2{
+	border: 1px solid black;
+	padding: 1px 2px 1px 20px;
+}
+
+.tabla-cabecera{
+	font-weight:bold;
+	font-family: Verdana, Geneva, sans-serif;
+	background-color:#77BBFF;
+	text-align: center;
+	height: 20px;
+	border: 1px solid black;
+	padding: 1px 2px 1px 2px;
+}
+
+/*Aqui el contenido de la columna izquierda*/
+.bienvenido {
+	width: 179px;
+	height: auto;
+	border: solid 1px #DCDEDD;
+	background: #FFFFFF;
+	margin-bottom: 5px;
+	overflow: hidden;
+}
+
+.favorito2 {
+	width: 179px;
+	height: 52px;
+	border: solid 1px #DCDEDD;
+	background-color: #FFFFFF;
+	margin-bottom: 5px;
+	overflow: hidden;
+}
+.favorito2:hover{
+	background-color: #CCC
+}
+
+.favorito {
+	width: 48px;
+	height: 48px;
+	margin-bottom: 5px;
+	overflow: hidden;
+	cursor:pointer;
+}
+
+.favorito3 {
+	text-align: center;
+	width: 32px;
+	height: 31px;
+	background-color: #FFFFFF;
+	margin-bottom: 2px;
+	overflow: hidden;
+}
+
+.toggler { 
+	width: 500px; height: 200px; 
+}  
+ 
+#effect { 
+	width: 240px; height: 135px; padding: 0.4em; position: relative; 
+}  
+
+#CargaAcademica {
+	background-image:url(../images/cargaacademicaprofesor.png);
+}
+#HorarioProfesor {
+	background-image:url(../images/HorarioProfesor.png);
+}
+#AsignarProfesor {
+	background-image:url(../images/AsignarProfesor.png);
+}
+#AgregarProfesor {
+	background-image:url(../images/AgregarProfesor.png);
+}
+#BuscarProfesor {
+	background-image:url(../images/BuscarProfesor.png);
+}
+#ReporteProfesoresAsignados {
+	background-image:url(../images/ReporteProfesoresAsignados.png);
+}
+#ListadoDeAlumnos {
+	background-image:url(../images/ListadoDeAlumnos.png);
+}	
+#PlanEvaluacion {
+	background-image:url(../images/PlanEvaluacion.png);
+}
+#Notas {
+	background-image:url(../images/Notas.png);
+}
+#EliminarEvaluacion {
+	background-image:url(../images/EliminarEvaluacion.png);
+}
+#Atras {
+	background-image:url(../images/Atras.png);
+}
+#Salir {
+	background-image:url(../images/Salir.png);
+}
+#Clave {
+	background-image:url(../images/Clave.png);
+}
+#Coordinadores {
+	background-image:url(../images/Coordinadores.png);
+}
+#Planificacion {
+	background-image:url(../images/Planificacion.png);
+}
+#EncuestaEstudiantes {
+	background-image:url(../images/EncuestaEstudiantes.png);
+}
+#EvaluacionDocente {
+	background-image:url(../images/EvaluacionDocente.png);
+}
+#ConsultaEvaluacionDocente {
+	background-image:url(../images/ConsultaEvaluacionDocente.png);
+}
+#ConsultaEncuestaEstudiantes {
+	background-image:url(../images/ConsultaEncuestaEstudiantes.png);
+}
+#GraficasPlanificacion {
+	background-image:url(../images/GraficasPlanificacion.png);
+}
+#Pasantia {
+	background-image:url(../images/Pasantia.png);
+}
+#RegistroEmpresa {
+	background-image:url(../images/empresa.png);
+}
+#ListadoEmpresa {
+	background-image:url(../images/listadoempresa.png);
+}
+#SolicitudPasantias {
+	background-image:url(../images/solicitudpasantias.png);
+}
+#ListaAlumnos{
+	background-image:url(../images/listaalumnos.png);
+}
+#FormularioActaEvaluacion {
+	background-image:url(../images/formularioevaluacionpasante.png);
+}
+#Reportes {
+	background-image:url(../images/Reportes.png);
+}
+#ModificarPlanEvaluacion {
+	background-image:url(../images/ModificarPlanEvaluacion.png);
+}
+#ListaAlumnoscinv {
+	background-image:url(../images/ListaAlumnoscinv.png);
+}
+#ListadoProfesores {
+	background-image:url(../images/ListadoProfesores.png);
+}
+#Reportescinv {
+	background-image:url(../images/Reportescinv.png);
+}
+#graficoscinv {
+	background-image:url(../images/graficoscinv.png);
+}
+#Entregas {
+	background-image:url(../images/Entregas.png);
+}
+#cdi {
+	background-image:url(../images/cdi.png);
+}
+#gestionacademica {
+	background-image:url(../images/gestionacademica.png);
+}
+
+.favorito img {
+	border-top-width: medium;
+	border-right-width-value: medium;
+	border-right-width-ltr-source: physical;
+	border-right-width-rtl-source: physical;
+	border-bottom-width: medium;
+	border-left-width-value: medium;
+	border-left-width-ltr-source: physical;
+	border-left-width-rtl-source: physical;
+	border-top-style: none;
+	border-right-style-value: none;
+	border-right-style-ltr-source: physical;
+	border-right-style-rtl-source: physical;
+	border-bottom-style: none;
+	border-left-style-value: none;
+	border-left-style-ltr-source: physical;
+	border-left-style-rtl-source: physical;
+	border-top-color: -moz-use-text-color;
+	border-right-color-value: -moz-use-text-color;
+	border-right-color-ltr-source: physical;
+	border-right-color-rtl-source: physical;
+	border-bottom-color: -moz-use-text-color;
+	border-left-color-value: -moz-use-text-color;
+	border-left-color-ltr-source: physical;
+	border-left-color-rtl-source: physical;
+}
+
+/*Columnas para la cabecera*/
+.columna_derecha_cabecera {
+	background-color:#FFFFFF;
+	/*background-image:url(../images/top-right.jpg);*/
+	float:right; /* Alineación a la derecha */
+	width:18px;
+	/*border:solid lightblue 1px;*/
+	padding:00px;
+	height:115px;
+}
+
+.columna_izquierda_cabecera {
+	background-color:#FFFFFF;
+	/*background-image:url(../images/top-right.jpg);*/
+	float:left; /* Alineación a la izquierda */
+	width:18px;
+	/*border:solid lightblue 1px;*/
+	padding:0px;
+	height:115px;
+}
+
+.columna_central_cabecera {
+	background-color:#FFFFFF;
+	/*background-image:url(../images/top-right.jpg);*/
+	margin-left:18px; /* Espacio para la columna izquierda */
+	margin-right:18px; /* Espacio para la columna derecha */
+	/*border:solid navy 1px;*/
+	padding:0px;
+	height:115px;
+}
+
+.columna_central_cabecera img {
+	margin-left:0px; /* Espacio para la columna izquierda */
+	margin-top:20px; /* Espacio para la columna derecha */
+}
+
+#link_logo{
+	float:left;
+}
+
+#link_logo a img{
+	text-decoration:none;
+	border:0;
+}
+
+.pie {
+	/*border:solid orange 1px;*/
+	padding:10px;
+	text-align:center;
+	font-size:90%;
+	background-color:#FFFFFF;
+}
