@@ -7,8 +7,8 @@ Aqui se encontrarán los archivos de los distintos proyectos que se realicen en 
 En el 2013, Guillermo Salazar (@guillesalazar) y otros miembros del proyecto crean este repositorio para controlar las versiones generadas de cada proyecto individual y centralizar el intercambio de información utilizando la nube como repositorio principal del proyecto.
 
 ### Soporte.
-UBAcadémico`<br/>`
-Universidad Bicentenaria de Aragua`<br/>`
-Edificio de Ingeniería`<br/>`
-Tercer Piso`<br/>`
+UBAcadémico
+Universidad Bicentenaria de Aragua
+Edificio de Ingeniería
+Tercer Piso
 LS8
